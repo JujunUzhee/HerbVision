@@ -1,107 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fitsSystemWindows="true"
-    android:clipToPadding="false"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DetailActivity"
-    android:background="@drawable/background">
+    android:layout_height="match_parent">
 
-    <!-- Ganti ini -->
-    <include
-        layout="@layout/header"
-        android:id="@+id/logoLayout"
+    <!-- LAYOUT UTAMA -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:fitsSystemWindows="true"
+        tools:context=".DetailActivity">
 
-    <!-- Ganti ScrollView ke NestedScrollView -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/logoLayout"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
-
-        <LinearLayout
+        <!-- Konten Scroll -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/contentScroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginBottom="200dp">
 
-            <!-- Preview Gambar -->
-            <ImageView
-                android:id="@+id/previewImageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="250dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/preview"
-                android:scaleType="centerCrop"
-                android:layout_gravity="center"/>
-
-
-            <!-- Nama Tanaman -->
-            <TextView
-                android:id="@+id/tv_plant_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tanaman: "
-                android:textStyle="italic"
-                android:textSize="18sp"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"/>
-
-            <TextView
-                android:id="@+id/tv_accuracy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/akurasi"
-                android:textSize="16sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"/>
-
-            <!-- Container Manfaat-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginTop="15dp">
+                android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manfaat"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:layout_marginTop="5sp"
-                    android:fontFamily="@font/lemonada"/>
+                <include
+                    layout="@layout/header"
+                    android:id="@+id/logoLayout" />
 
-                <TextView
-                    android:id="@+id/tv_manfaat"
+                <ImageView
+                    android:id="@+id/previewImageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:fontFamily="@font/lemonada"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="1dp"
-                    android:layout_marginTop="8dp"/>
+                    android:maxHeight="250dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/preview" />
+
+                <TextView
+                    android:id="@+id/tv_plant_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanaman: "
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/tv_accuracy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/akurasi"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp" />
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Bottom Sheet -->
+        <LinearLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_top_sheet"
+            android:padding="20dp"
+            android:elevation="16dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            app:behavior_peekHeight="140dp"
+            app:behavior_hideable="false">
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/drag_handle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MANFAAT TANAMAN HERBAL"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginBottom="8dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
+
+                <TextView
+                    android:id="@+id/tv_manfaat_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="(Manfaat akan tampil di sini)"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp" />
+            </ScrollView>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- Menu Navigasi Bawah -->
+    <!-- Bottom Navigation DI LUAR CoordinatorLayout -->
     <include
         android:id="@+id/bottom_navigation"
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_gravity="bottom" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

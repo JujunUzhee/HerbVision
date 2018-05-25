@@ -58,5 +58,6 @@
     <string name="manfaat_lidah_buaya">&#8226; Menyembuhkan luka\n&#8226; Merangsang pembentukan kolagen\n&#8226; Antiinflamasi\n&#8226; Antibakteri\n&#8226; Antivirus\n&#8226; Melembapkan kulit\n&#8226; Meredakan iritasi</string>
 
     <string name="manfaat_unknown">Tanaman tidak diketahui. Silakan coba lagi dengan gambar yang lebih jelas atau sudut yang berbeda.</string>
+    <string name="realtime">Realtime</string>
 
 </resources>

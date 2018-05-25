@@ -75,6 +75,16 @@ class MainActivity : AppCompatActivity() {
                 requestStoragePermission()
             }
         }
+
+        val realtimeButton = findViewById<ImageView>(R.id.realtimeButton)
+        realtimeButton.setOnClickListener {
+            // Optional: Cek permission kamera dulu, biar aman
+            if (checkCameraPermission()) {
+                startActivity(Intent(this, RealTimeActivity::class.java))
+            } else {
+                requestCameraPermission()
+            }
+        }
     }
 
     private fun checkCameraPermission(): Boolean {

@@ -19,8 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AnalysisActivity : AppCompatActivity() {
 
@@ -78,7 +76,7 @@ class AnalysisActivity : AppCompatActivity() {
 
             Glide.with(this)
                 .load(imageUri)
-                .override(1024, 1024) // untuk hemat memory
+                .override(1024, 1024)
                 .placeholder(R.drawable.placeholder_image)
                 .into(previewImageView)
 
@@ -99,34 +97,33 @@ class AnalysisActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setupButtonClick() {
-        // Aksi tombol identifikasi
         btnIdentifikasi.setOnClickListener {
             processedBitmap?.let { bitmap ->
                 try {
                     val (plantName, confidence) = classifier.classifyImage(bitmap)
 
-                    // Format tanggal
-                    val dateFormat =
-                        java.text.SimpleDateFormat("dd MMMM yyyy", java.util.Locale("id"))
+                    val dateFormat = java.text.SimpleDateFormat("dd MMMM yyyy", java.util.Locale("id"))
                     val currentDate = dateFormat.format(java.util.Date())
 
-                    // Simpan ke database
-                    val dbHelper = com.example.herbvision.utils.DatabaseHelper(this)
+                    val dbHelper = DatabaseHelper(this)
                     val imagePath = saveImageToInternalStorage(bitmap)
-                    dbHelper.insertHistory(this, plantName, currentDate, confidence, imagePath)
 
-                    // Navigasi ke halaman detail
-                    navigateToDetail(plantName,  confidence * 100)
+                    // Gunakan 0f jika confidence null
+                    val finalConfidence = confidence ?: 0f
+
+                    dbHelper.insertHistory(this, plantName, currentDate, finalConfidence, imagePath)
+
+                    // Tetap navigasi ke halaman detail meskipun confidence null
+                    navigateToDetail(plantName, confidence)
                 } catch (e: Exception) {
-                    Toast.makeText(this, "Terjadi kesalahan saat klasifikasi.", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this, "Terjadi kesalahan saat klasifikasi.", Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
             } ?: Toast.makeText(this, "Gambar belum siap!", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun cropToSquare(bitmap: Bitmap): Bitmap {
         val size = minOf(bitmap.width, bitmap.height)
@@ -136,7 +133,6 @@ class AnalysisActivity : AppCompatActivity() {
     }
 
     private fun resizeBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-        // Cek apakah bitmap menggunakan config HARDWARE dan API level cukup
         val safeBitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && bitmap.config == Bitmap.Config.HARDWARE) {
             bitmap.copy(Bitmap.Config.ARGB_8888, true)
         } else {
@@ -151,8 +147,6 @@ class AnalysisActivity : AppCompatActivity() {
         canvas.drawBitmap(safeBitmap, srcRect, dstRect, paint)
         return scaled
     }
-
-
 
     private fun processImageForModel(bitmap: Bitmap): Bitmap {
         val square = cropToSquare(bitmap)
@@ -187,13 +181,13 @@ class AnalysisActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun navigateToDetail(plantName: String, confidence: Float) {
+    private fun navigateToDetail(plantName: String, confidence: Float?) {
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra("plantName", plantName)
-            putExtra("confidence", confidence)
+            putExtra("confidence", confidence?.times(100) ?: -1f) // -1 sebagai indikator "tidak diketahui"
             putExtra("imageUri", imageUri?.toString())
         }
         startActivity(intent)
     }
+
 }

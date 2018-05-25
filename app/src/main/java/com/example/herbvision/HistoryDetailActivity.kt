@@ -26,8 +26,15 @@ class HistoryDetailActivity : AppCompatActivity() {
 
         binding.detailPlantName.text = plantName
         binding.detailDate.text = date
-        binding.detailAccuracy.text = "Akurasi: ${String.format("%.2f", accuracy)}%"
         binding.detailManfaat.text = manfaat
+
+        if (plantName == "Tanaman Tidak Diketahui") {
+            binding.detailAccuracy.text = "" // kosongkan akurasi
+            binding.detailAccuracy.visibility = android.view.View.GONE // sembunyikan view
+        } else {
+            binding.detailAccuracy.text = "Akurasi: ${String.format("%.2f", accuracy)}%"
+            binding.detailAccuracy.visibility = android.view.View.VISIBLE
+        }
 
         if (!imagePath.isNullOrEmpty()) {
             val uri = Uri.parse(imagePath)
@@ -36,4 +43,5 @@ class HistoryDetailActivity : AppCompatActivity() {
             binding.detailImage.setImageResource(R.drawable.placeholder_image)
         }
     }
+
 }

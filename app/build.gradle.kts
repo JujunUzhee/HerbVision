@@ -64,7 +64,11 @@ dependencies {
 
     implementation("org.tensorflow:tensorflow-lite:2.11.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.2")
-    implementation("org.tensorflow:tensorflow-lite-gpu:2.11.0") // jika butuh GPU delegate
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.11.0")
+    implementation ("androidx.camera:camera-camera2:1.3.0")
+    implementation ("androidx.camera:camera-lifecycle:1.3.0")
+    implementation ("androidx.camera:camera-view:1.3.0")
+
 
 
     implementation("com.github.bumptech.glide:glide:4.16.0")

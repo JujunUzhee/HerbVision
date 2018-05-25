@@ -19,9 +19,9 @@ class Classifier(context: Context) {
     private val numClasses = 11
     private val CONFIDENCE_THRESHOLD = 0.5f
 
-    private val labels = listOf( // UPDATED
+    private val labels = listOf( // Biarkan tetap "unknown" untuk model
         "Bidara", "Jarak Tintir", "Kelor", "Lavender", "Lidah Buaya",
-        "Mint", "Rosemary", "Saga", "Tapak Dara", "Temulawak","unknown"
+        "Mint", "Rosemary", "Saga", "Tapak Dara", "Temulawak", "unknown"
     )
 
     init {
@@ -33,7 +33,7 @@ class Classifier(context: Context) {
         Log.d("Classifier", "Model ResNet50 berhasil dimuat")
     }
 
-    fun classifyImage(bitmap: Bitmap): Pair<String, Float> {
+    fun classifyImage(bitmap: Bitmap): Pair<String, Float?> {
         val tensorImage = preprocessImage(bitmap)
         val outputArray = Array(1) { FloatArray(numClasses) }
 
@@ -42,11 +42,13 @@ class Classifier(context: Context) {
             val probabilities = outputArray[0]
             val maxIndex = probabilities.indices.maxByOrNull { probabilities[it] } ?: -1
             val confidence = probabilities.getOrNull(maxIndex) ?: 0f
+            val rawLabel = labels[maxIndex]
 
             probabilities.forEachIndexed { index, score ->
                 Log.d("Classifier", "Kelas ${labels[index]}: $score")
             }
 
+            // Top-3 log (debug only)
             val top3 = probabilities.mapIndexed { index, value -> index to value }
                 .sortedByDescending { it.second }
                 .take(3)
@@ -55,19 +57,25 @@ class Classifier(context: Context) {
                 Log.d("Classifier", "Top-${rank + 1}: ${labels[i]} (Confidence: $conf)")
             }
 
-            val predictedLabel = labels[maxIndex]
+            // Kasus 1: confidence rendah
+            if (confidence < CONFIDENCE_THRESHOLD) {
+                Log.d("Classifier", "Confidence rendah (< 0.5). Output dianggap tidak diketahui.")
+                return Pair("Tanaman Tidak Diketahui", null)
+            }
 
-            return if (predictedLabel == "Unknown" || confidence < CONFIDENCE_THRESHOLD) {
-                Log.d("Classifier", "Prediksi tidak yakin atau 'Unknown'. Confidence: $confidence")
-            Pair("Tanaman Tidak Diketahui", confidence)
-        } else {
-            Log.d("Classifier", "Prediksi: $predictedLabel, Confidence: $confidence")
-            Pair(predictedLabel, confidence)
-        }
+            // Kasus 2: model prediksi "unknown"
+            if (rawLabel.lowercase() == "unknown") {
+                Log.d("Classifier", "Model memprediksi unknown. Output akan ditampilkan sebagai 'Tanaman Tidak Diketahui'.")
+                return Pair("Tanaman Tidak Diketahui", null)
+            }
+
+            // Kasus 3: prediksi normal
+            Log.d("Classifier", "Prediksi: $rawLabel, Confidence: $confidence")
+            return Pair(rawLabel, confidence)
 
         } catch (e: Exception) {
             Log.e("Classifier", "Terjadi kesalahan saat inferensi: ${e.message}")
-            Pair("Tanaman Tidak Diketahui", 0.0f)
+            return Pair("Tanaman Tidak Diketahui", null)
         }
     }
 
