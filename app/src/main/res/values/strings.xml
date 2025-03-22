@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">HerbVision</string>
+    <string name="gallery">Galeri</string>
+    <string name="keterangan">Identifikasi tanaman herbal dengan kamera atau pilih gambar dari galeri</string>
+    <string name="herb">Herb</string>
+    <string name="vision">Vision</string>
+    <string name="kamera">Kamera</string>
+    <string name="preview">Preview gambar</string>
+    <string name="identifikasi">Identifikasi</string>
+    <string name="tentang">Tentang</string>
+    <string name="histori">histori</string>
+    <string name="tutor1">Untuk Memulai identifikasi tanaman herbal memilih menggunakan kamera atau galeri</string>
+    <string name="penggunaan">Penggunaan</string>
+    <string name="tutor2">Kemudian klik button identifikasi</string>
+    <string name="tutor3">Kemudian akan menampilkan nama tanaman dan manfaat tanaman yang diidentifikasi</string>
+    <string name="tutor">tutor</string>
+</resources>
