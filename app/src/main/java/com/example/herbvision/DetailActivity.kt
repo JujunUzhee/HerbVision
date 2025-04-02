@@ -21,23 +21,30 @@ class DetailActivity : AppCompatActivity() {
         tvPlantName = findViewById(R.id.tv_plant_name)
         tvManfaat = findViewById(R.id.tv_manfaat)
 
-        // Ambil data gambar dari Intent
-        val imageBitmap = intent.getParcelableExtra<Bitmap>("imageBitmap")
-        val imageUriString = intent.getStringExtra("imageUri")
+        val plantName = intent.getStringExtra("plantName") ?: "Tanaman Tidak Diketahui"
+        val imageBitmap: Bitmap? = intent.getParcelableExtra("imageBitmap")
+        val imageUriString: String? = intent.getStringExtra("imageUri")
 
-        if (imageBitmap != null) {
-            previewImageView.setImageBitmap(imageBitmap)
-        } else if (imageUriString != null) {
-            val imageUri = Uri.parse(imageUriString)
-            previewImageView.setImageURI(imageUri)
+        // Set Nama Tanaman & Manfaat
+        if (plantName == "Tanaman Tidak Diketahui") {
+            tvPlantName.text = "Tanaman Tidak Diketahui"
+            tvManfaat.text = "Coba unggah foto lain atau gunakan tanaman yang didukung."
+        } else {
+            val plantResId = resources.getIdentifier(plantName.lowercase().replace(" ", "_"), "string", packageName)
+            val manfaatResId = resources.getIdentifier("manfaat_${plantName.lowercase().replace(" ", "_")}", "string", packageName)
+
+            tvPlantName.text = if (plantResId != 0) getString(plantResId) else plantName
+            tvManfaat.text = if (manfaatResId != 0) getString(manfaatResId) else "Manfaat belum tersedia"
         }
 
-        // Simulasi hasil klasifikasi (nanti diganti dengan model TFLite)
-        val dummyResult = "Lavender"
-        val dummyManfaat = "Mengurangi stres, meningkatkan relaksasi, dan meredakan sakit kepala."
-
-        // Set hasil klasifikasi
-        tvPlantName.text = "Tanaman: $dummyResult"
-        tvManfaat.text = dummyManfaat
+        // Tampilkan gambar
+        if (imageBitmap != null) {
+            previewImageView.setImageBitmap(imageBitmap)
+        } else if (!imageUriString.isNullOrEmpty()) {
+            val imageUri = Uri.parse(imageUriString)
+            previewImageView.setImageURI(imageUri)
+        } else {
+            previewImageView.setImageResource(R.drawable.placeholder_image) // Gambar default jika tidak ada
+        }
     }
 }
