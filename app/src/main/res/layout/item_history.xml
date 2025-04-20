@@ -14,11 +14,32 @@
 
         <!-- Gambar Tanaman -->
         <ImageView
-            android:id="@+id/imgTanaman"
+            android:id="@+id/historyImage"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:background="@drawable/background"/>
+            android:background="@drawable/background" />
+
+        <!-- Nama Tanaman -->
+        <TextView
+            android:id="@+id/historyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/historyImage"
+            android:layout_marginTop="8dp"
+            android:text="Nama Tanaman"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Tanggal Analisis -->
+        <TextView
+            android:id="@+id/historyDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/historyName"
+            android:layout_marginTop="4dp"
+            android:text="20 April 2025"
+            android:textSize="14sp" />
 
         <!-- Ikon Panah -->
         <ImageView
@@ -27,8 +48,8 @@
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_arrow"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_arrow" />
 
     </RelativeLayout>
 

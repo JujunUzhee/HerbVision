@@ -45,6 +45,10 @@ android {
     aaptOptions {
         noCompress("tflite") // ✅ Supaya model TFLite tidak dikompresi
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -53,15 +57,17 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation("com.google.code.gson:gson:2.10.1")
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     // ✅ Menggunakan TensorFlow Lite terbaru dari Google AI Edge
-    implementation("com.google.ai.edge.litert:litert:1.0.0")
-    implementation("com.google.ai.edge.litert:litert-support:1.0.0")
-    implementation("com.google.ai.edge.litert:litert-metadata:1.0.0")
+    implementation("org.tensorflow:tensorflow-lite:2.11.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.4.3")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 }

@@ -7,12 +7,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.herbvision.adapter.HistoryAdapter
+import com.example.herbvision.utils.HistoryManager
+import com.example.herbvision.databinding.ActivityHistoryBinding
 
 class HistoryActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityHistoryBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_history)
 
         // Set click listener untuk setiap menu di bottom navigation
         findViewById<View>(R.id.identifikasi_layout).setOnClickListener {
@@ -31,10 +39,16 @@ class HistoryActivity : AppCompatActivity() {
             startActivity(Intent(this, AboutActivity::class.java))
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.histori_layout)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.historiLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Set up RecyclerView
+        val historyList = HistoryManager.getHistory(this)
+        val adapter = HistoryAdapter(historyList)
+        binding.rvHistori.layoutManager = LinearLayoutManager(this)
+        binding.rvHistori.adapter = adapter
     }
 }

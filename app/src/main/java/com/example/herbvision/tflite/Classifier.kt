@@ -11,7 +11,6 @@ import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import java.nio.MappedByteBuffer
-import java.nio.ByteBuffer
 
 class Classifier(context: Context) {
 
@@ -20,7 +19,7 @@ class Classifier(context: Context) {
     private val numClasses = 10       // Sesuai dengan jumlah kelas tanaman
 
     init {
-        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnn_resnet50.tflite")
+        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnnresnet50.tflite")
         interpreter = Interpreter(model)
     }
 
@@ -38,7 +37,7 @@ class Classifier(context: Context) {
         val maxIndex = outputArray[0].indices.maxByOrNull { outputArray[0][it] } ?: -1
         val confidence = outputArray[0][maxIndex]
 
-        val labels = listOf("Lavender", "Rosemary", "Tapak Dara", "Sirih", "Sage", "Jarak Tintir", "Mint", "Kelor", "Temulawak", "Lidah Buaya")
+        val labels = listOf("Bidara","Jarak Tintir", "Kelor", "Lavender", "Lidah Buaya", "Mint", "Rosemary", "Saga", "Tapak Dara", "Temulawak")
 
         // Cek jika prediksi valid
         if (maxIndex !in labels.indices) {
