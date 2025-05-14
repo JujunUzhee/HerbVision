@@ -6,39 +6,57 @@
     <string name="vision">Vision</string>
     <string name="kamera">Kamera</string>
     <string name="preview">Preview gambar</string>
-    <string name="identifikasi">Identifikasi</string>
+    <string name="identifikasi">Deteksi</string>
     <string name="tentang">Tentang</string>
-    <string name="histori">histori</string>
+    <string name="histori">Riwayat</string>
     <string name="tutor1">Untuk Memulai identifikasi tanaman herbal memilih menggunakan kamera atau galeri</string>
     <string name="penggunaan">Penggunaan</string>
     <string name="tutor2">Kemudian klik button identifikasi</string>
     <string name="tutor3">Kemudian akan menampilkan nama tanaman dan manfaat tanaman yang diidentifikasi</string>
     <string name="tutor">tutor</string>
     <string name="about">HerbVision adalah aplikasi untuk mengidentifikasi berbagai jenis tanaman herbal dengan mudah. Cukup ambil gambar menggunakan kamera atau pilih dari galeri, dan aplikasi akan memberi tahu nama dan manfaat tanaman tersebut. Semua analisis yang dilakukan akan tersimpan dalam riwayat, sehingga Anda bisa melihatnya lagi kapan saja.</string>
+    <string name="Detail">Dibuat oleh: \n Nama : Jujun Junaedi\nNIM : 20210810016 \n Kelas : TINFC-2021-05\nProgram Studi : Teknik Informatika\nFakultas : Komputer\n Universitas : Kuningan</string>
+    <string name="manfaat">Manfaat : </string>
+    <string name="akurasi">Akurasi</string>
+    <string name="tanggal_analisis">Tanggal Analisis</string>
+    <string name="nama_tanaman">Nama Tanaman</string>
 
 
     <!-- Nama Tanaman -->
     <string name="lavender">Lavender</string>
     <string name="rosemary">Rosemary</string>
     <string name="tapak_dara">Tapak Dara</string>
-    <string name="sirih">Sirih</string>
-    <string name="sage">Sage</string>
+    <string name="bidara">Bidara</string>
+    <string name="saga">Saga</string>
     <string name="jarak_tintir">Jarak Tintir</string>
     <string name="mint">Mint</string>
     <string name="kelor">Kelor</string>
     <string name="temulawak">Temulawak</string>
     <string name="lidah_buaya">Lidah Buaya</string>
+    <string name="unknown">Tanaman Tidak Diketahui</string>
+
 
     <!-- Manfaat Tanaman -->
-    <string name="manfaat_lavender">Mengusir nyamuk, mengurangi stres.</string>
-    <string name="manfaat_rosemary">Meningkatkan daya ingat, menenangkan pikiran.</string>
-    <string name="manfaat_tapak_dara">Digunakan untuk pengobatan kanker.</string>
-    <string name="manfaat_sirih">Membantu kesehatan mulut dan pernapasan.</string>
-    <string name="manfaat_sage">Mengurangi peradangan, baik untuk pencernaan.</string>
-    <string name="manfaat_jarak_tintir">Obat luar untuk luka dan penyakit kulit.</string>
-    <string name="manfaat_mint">Baik untuk pencernaan dan pernapasan.</string>
-    <string name="manfaat_kelor">Sumber antioksidan tinggi, baik untuk kesehatan.</string>
-    <string name="manfaat_temulawak">Baik untuk pencernaan dan liver.</string>
-    <string name="manfaat_lidah_buaya">Bagus untuk kulit dan kesehatan rambut.</string>
+    <string name="manfaat_lavender">&#8226; Relaksasi\n&#8226; Meredakan kecemasan\n&#8226; Meningkatkan kualitas tidur\n&#8226; Pereda nyeri\n&#8226; Antikejang\n&#8226; Antiinflamasi\n&#8226; Antioksidan\n&#8226; Antibakteri\n&#8226; Antijamur</string>
+
+    <string name="manfaat_rosemary">&#8226; Antiinflamasi\n&#8226; Antioksidan\n&#8226; Antibakteri\n&#8226; Pereda nyeri\n&#8226; Antidiabetik\n&#8226; Antikanker\n&#8226; Pelindung hati\n&#8226; Meningkatkan daya ingat dan konsentrasi</string>
+
+    <string name="manfaat_tapak_dara">&#8226; Antidiabetik\n&#8226; Antihipertensi\n&#8226; Antikanker (vinblastin dan vinkristin)\n&#8226; Antioksidan</string>
+
+    <string name="manfaat_bidara">&#8226; Membersihkan racun dalam tubuh\n&#8226; Menenangkan pikiran\n&#8226; Membantu mengatasi gangguan tidur\n&#8226; Antibakteri\n&#8226; Antioksidan\n&#8226; Menyembuhkan luka\n&#8226; Mendukung kesehatan kulit</string>
+
+    <string name="manfaat_saga">&#8226; Antidiabetik\n&#8226; Antioksidan\n&#8226; Antiinflamasi</string>
+
+    <string name="manfaat_jarak_tintir">&#8226; Mempercepat penyembuhan luka\n&#8226; Membantu epitelisasi kulit\n&#8226; Bersifat antiseptik</string>
+
+    <string name="manfaat_mint">&#8226; Antibakteri\n&#8226; Antijamur\n&#8226; Antiinflamasi\n&#8226; Pereda nyeri dan kram perut\n&#8226; Antidiabetik\n&#8226; Pelindung hati\n&#8226; Pelindung saraf</string>
+
+    <string name="manfaat_kelor">&#8226; Kaya nutrisi (protein, vitamin, mineral)\n&#8226; Antioksidan\n&#8226; Antiinflamasi\n&#8226; Antikanker\n&#8226; Antihipertensi\n&#8226; Pelindung hati\n&#8226; Antidiabetik</string>
+
+    <string name="manfaat_temulawak">&#8226; Antiinflamasi\n&#8226; Antioksidan\n&#8226; Antimikroba\n&#8226; Pelindung hati\n&#8226; Menstabilkan pencernaan\n&#8226; Meredakan diare</string>
+
+    <string name="manfaat_lidah_buaya">&#8226; Menyembuhkan luka\n&#8226; Merangsang pembentukan kolagen\n&#8226; Antiinflamasi\n&#8226; Antibakteri\n&#8226; Antivirus\n&#8226; Melembapkan kulit\n&#8226; Meredakan iritasi</string>
+
+    <string name="manfaat_unknown">Tanaman tidak diketahui. Silakan coba lagi dengan gambar yang lebih jelas atau sudut yang berbeda.</string>
 
 </resources>

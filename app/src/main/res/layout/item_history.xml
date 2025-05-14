@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
@@ -15,42 +16,78 @@
         <!-- Gambar Tanaman -->
         <ImageView
             android:id="@+id/historyImage"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="8dp"
             android:scaleType="centerCrop"
-            android:background="@drawable/background" />
+            android:background="@drawable/background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
         <!-- Nama Tanaman -->
         <TextView
             android:id="@+id/historyName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/historyImage"
-            android:layout_marginTop="8dp"
             android:text="Nama Tanaman"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="18sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/historyImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imgArrow"
+            app:layout_constraintHorizontal_bias="0" />
 
-        <!-- Tanggal Analisis -->
+        <!-- Tombol Hapus dengan area sentuh 48dp -->
+        <FrameLayout
+            android:id="@+id/deleteFrame"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="@id/historyName"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/delete"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:contentDescription="Hapus" />
+        </FrameLayout>
+
+        <!-- Tanggal -->
         <TextView
             android:id="@+id/historyDate"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/historyName"
-            android:layout_marginTop="4dp"
             android:text="20 April 2025"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/historyName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imgArrow"
+            app:layout_constraintHorizontal_bias="0" />
 
         <!-- Ikon Panah -->
         <ImageView
             android:id="@+id/imgArrow"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_arrow" />
+            android:src="@drawable/ic_arrow"
+            app:layout_constraintTop_toTopOf="@id/historyName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/historyDate" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

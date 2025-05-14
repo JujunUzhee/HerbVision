@@ -4,20 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class UsageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_usage)
 
-        // Load gambar menggunakan Glide (dengan optimalisasi)
+        // Load gambar
         loadImage(R.drawable.tutor1, findViewById(R.id.img_tutor1))
         loadImage(R.drawable.tutor2, findViewById(R.id.img_tutor2))
         loadImage(R.drawable.tutor3, findViewById(R.id.img_tutor3))
@@ -27,35 +23,41 @@ class UsageActivity : AppCompatActivity() {
 
         // Bottom navigation listener
         findViewById<View>(R.id.identifikasi_layout).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
 
         findViewById<View>(R.id.histori_layout).setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
+            val intent = Intent(this, HistoryActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
 
         findViewById<View>(R.id.tentang_layout).setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
-
-        // Menyesuaikan padding dengan insets
-        val panduanView = findViewById<View>(R.id.panduan_layout)
-        if (panduanView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(panduanView) { v, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                insets
-            }
+            val intent = Intent(this, AboutActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 
-    // Fungsi untuk memuat gambar dengan Glide
     private fun loadImage(drawableId: Int, imageView: ImageView) {
         Glide.with(this)
             .load(drawableId)
-            .override(150, 150) // Sesuaikan ukuran agar tidak blur
-            .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache untuk mengurangi reload gambar
-            .dontTransform() // Hindari transformasi otomatis agar tidak blur
+            .override(150, 150)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .dontTransform()
             .into(imageView)
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        startActivity(intent)
+        finish()
+        super.onBackPressed()
     }
 }

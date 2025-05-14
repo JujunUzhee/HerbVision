@@ -22,7 +22,7 @@
         android:textColor="#4CAF50"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginStart="80dp"/>
+        android:layout_marginStart="85dp"/>
 
     <TextView
         android:id="@+id/visionTextView"

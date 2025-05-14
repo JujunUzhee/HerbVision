@@ -2,27 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailActivity"
     android:background="@drawable/background">
 
-    <!-- Logo & Nama Aplikasi -->
+    <!-- Ganti ini -->
     <include
         layout="@layout/header"
+        android:id="@+id/logoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- ScrollView untuk konten -->
-    <ScrollView
+    <!-- Ganti ScrollView ke NestedScrollView -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/logoLayout"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        android:fillViewport="true">
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,11 +36,14 @@
             <!-- Preview Gambar -->
             <ImageView
                 android:id="@+id/previewImageView"
-                android:layout_width="250dp"
-                android:layout_height="170dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="250dp"
+                android:adjustViewBounds="true"
                 android:contentDescription="@string/preview"
                 android:scaleType="centerCrop"
                 android:layout_gravity="center"/>
+
 
             <!-- Nama Tanaman -->
             <TextView
@@ -50,32 +56,45 @@
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"/>
 
-            <!-- Container Manfaat -->
+            <TextView
+                android:id="@+id/tv_accuracy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/akurasi"
+                android:textSize="16sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Container Manfaat-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/background"
                 android:padding="16dp"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="15dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Manfaat :"
+                    android:text="@string/manfaat"
                     android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:layout_marginTop="5sp"
+                    android:fontFamily="@font/lemonada"/>
 
                 <TextView
                     android:id="@+id/tv_manfaat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="@font/lemonada"
                     android:textSize="14sp"
+                    android:lineSpacingExtra="1dp"
                     android:layout_marginTop="8dp"/>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
 
     <!-- Menu Navigasi Bawah -->
     <include

@@ -1,50 +1,93 @@
 package com.example.herbvision
 
-import android.graphics.Bitmap
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var previewImageView: ImageView
     private lateinit var tvPlantName: TextView
     private lateinit var tvManfaat: TextView
+    private lateinit var tvAccuracy: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        initViews()
+        setupBottomNavigation()
+
+        val plantName = intent.getStringExtra("plantName") ?: "Tanaman Tidak Diketahui"
+        val imageUri = intent.getStringExtra("imageUri")?.let { Uri.parse(it) }
+
+        showPlantInfo(plantName)
+        showPlantImage(imageUri)
+    }
+
+    private fun initViews() {
         previewImageView = findViewById(R.id.previewImageView)
         tvPlantName = findViewById(R.id.tv_plant_name)
         tvManfaat = findViewById(R.id.tv_manfaat)
+        tvAccuracy = findViewById(R.id.tv_accuracy)
 
-        val plantName = intent.getStringExtra("plantName") ?: "Tanaman Tidak Diketahui"
-        val imageBitmap: Bitmap? = intent.getParcelableExtra("imageBitmap")
-        val imageUriString: String? = intent.getStringExtra("imageUri")
+    }
 
-        // Set Nama Tanaman & Manfaat
+    private fun setupBottomNavigation() {
+        findViewById<View>(R.id.identifikasi_layout).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+        findViewById<View>(R.id.histori_layout).setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
+        findViewById<View>(R.id.panduan_layout).setOnClickListener {
+            startActivity(Intent(this, UsageActivity::class.java))
+        }
+        findViewById<View>(R.id.tentang_layout).setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
+        }
+    }
+
+    private fun showPlantInfo(plantName: String) {
         if (plantName == "Tanaman Tidak Diketahui") {
-            tvPlantName.text = "Tanaman Tidak Diketahui"
+            tvPlantName.text = plantName
             tvManfaat.text = "Coba unggah foto lain atau gunakan tanaman yang didukung."
+            return
+        }
+        val accuracy = intent.getFloatExtra("confidence", -1f)
+        if (accuracy >= 0f) {
+            tvAccuracy.visibility = View.VISIBLE
+            tvAccuracy.text = "Akurasi: ${String.format("%.2f", accuracy)}%"
         } else {
-            val plantResId = resources.getIdentifier(plantName.lowercase().replace(" ", "_"), "string", packageName)
-            val manfaatResId = resources.getIdentifier("manfaat_${plantName.lowercase().replace(" ", "_")}", "string", packageName)
-
-            tvPlantName.text = if (plantResId != 0) getString(plantResId) else plantName
-            tvManfaat.text = if (manfaatResId != 0) getString(manfaatResId) else "Manfaat belum tersedia"
+            tvAccuracy.visibility = View.GONE
         }
 
-        // Tampilkan gambar
-        if (imageBitmap != null) {
-            previewImageView.setImageBitmap(imageBitmap)
-        } else if (!imageUriString.isNullOrEmpty()) {
-            val imageUri = Uri.parse(imageUriString)
-            previewImageView.setImageURI(imageUri)
+
+        val formattedName = plantName.lowercase().replace(" ", "_")
+        val nameResId = resources.getIdentifier(formattedName, "string", packageName)
+        val benefitResId = resources.getIdentifier("manfaat_$formattedName", "string", packageName)
+
+        tvPlantName.text = if (nameResId != 0) getString(nameResId) else plantName
+        tvManfaat.text = if (benefitResId != 0) getString(benefitResId) else "Manfaat belum tersedia."
+    }
+
+
+
+    private fun showPlantImage(uri: Uri?) {
+        if (uri != null) {
+            Glide.with(this)
+                .load(uri)
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.placeholder_image)
+                .into(previewImageView)
         } else {
-            previewImageView.setImageResource(R.drawable.placeholder_image) // Gambar default jika tidak ada
+            previewImageView.setImageResource(R.drawable.placeholder_image)
         }
     }
 }

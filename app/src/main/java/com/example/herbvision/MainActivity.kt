@@ -5,20 +5,26 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.WindowInsetsCompat.Type
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var cameraButton: ImageView
+    private lateinit var cameraImageUri: Uri
     private lateinit var galleryButton: ImageView
 
     companion object {
@@ -30,11 +36,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Set click listener untuk setiap menu di bottom navigation
-        findViewById<View>(R.id.identifikasi_layout).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+        val bottomNav = findViewById<View>(R.id.bottomNavigationLayout)
+
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNav) { view, insets ->
+            val systemInsets = insets.getInsets(Type.systemBars())
+            view.setPadding(0, 0, 0, systemInsets.bottom)
+            WindowInsetsCompat.CONSUMED
         }
 
+        // Set click listener untuk setiap menu di bottom navigation
         findViewById<View>(R.id.histori_layout).setOnClickListener {
             startActivity(Intent(this, HistoryActivity::class.java))
         }
@@ -92,8 +102,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openCamera() {
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(cameraIntent, REQUEST_CAMERA)
+        val imageFile = File.createTempFile("herb_", ".jpg", cacheDir)
+        cameraImageUri = FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri)
+        startActivityForResult(intent, REQUEST_CAMERA)
     }
 
     private fun openGallery() {
@@ -102,24 +116,27 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(galleryIntent, REQUEST_GALLERY)
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CAMERA -> {
-                    val imageBitmap = data.extras?.get("data") as Bitmap
-                    navigateToAnalysis(imageBitmap)
+                    if (::cameraImageUri.isInitialized) {
+                        navigateToAnalysis(cameraImageUri)
+                    }
                 }
                 REQUEST_GALLERY -> {
-                    val imageUri = data.data
+                    val imageUri = data?.data
                     if (imageUri != null) {
-                        navigateToAnalysis(imageUri)
+                        navigateToAnalysis(imageUri) // kirim URI saja
                     }
                 }
             }
         }
     }
+
 
     private fun navigateToAnalysis(image: Any) {
         val intent = Intent(this, AnalysisActivity::class.java)
@@ -129,5 +146,17 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("imageUri", image.toString())
         }
         startActivity(intent)
+    }
+
+    @Suppress("MissingSuperCall")
+    override fun onBackPressed() {
+        android.app.AlertDialog.Builder(this)
+            .setTitle("Keluar Aplikasi")
+            .setMessage("Apakah Anda yakin ingin keluar?")
+            .setPositiveButton("Ya") { _, _ ->
+                finishAffinity() // Keluar dari semua aktivitas
+            }
+            .setNegativeButton("Tidak", null)
+            .show()
     }
 }

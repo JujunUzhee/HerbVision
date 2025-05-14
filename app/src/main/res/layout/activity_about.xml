@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -40,15 +42,15 @@
                 android:fontFamily="@font/lemonada"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="5dp"/>
 
             <!-- Logo HerbVision -->
             <ImageView
                 android:id="@+id/logoHerbVision"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
                 android:src="@drawable/logo"
-                android:layout_marginTop="10dp"
+
                 android:contentDescription="@string/app_name"/>
 
             <!-- Deskripsi Aplikasi -->
@@ -58,9 +60,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/about"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp"
-                android:gravity="center"/>
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:lineSpacingExtra="3dp"/>
+
+            <!-- Deskripsi Pembuat -->
+            <TextView
+                android:id="@+id/tv_creator_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Detail"
+                android:textSize="14sp"
+                android:layout_marginTop="35dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:lineSpacingExtra="3dp"/>
+
 
         </LinearLayout>
     </ScrollView>

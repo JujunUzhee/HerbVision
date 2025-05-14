@@ -3,38 +3,41 @@ package com.example.herbvision
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class AboutActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_about)
 
-        // Set click listener untuk setiap menu di bottom navigation
+        setupBottomNavigation()
+    }
+
+    private fun setupBottomNavigation() {
         findViewById<View>(R.id.identifikasi_layout).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            navigateTo(MainActivity::class.java)
         }
 
         findViewById<View>(R.id.histori_layout).setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
+            navigateTo(HistoryActivity::class.java)
         }
 
         findViewById<View>(R.id.panduan_layout).setOnClickListener {
-            startActivity(Intent(this, UsageActivity::class.java))
+            navigateTo(UsageActivity::class.java)
         }
+    }
 
-        findViewById<View>(R.id.tentang_layout).setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
+    private fun navigateTo(targetActivity: Class<*>) {
+        val intent = Intent(this, targetActivity).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
+        startActivity(intent)
+        finish()
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.tentang_layout)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onBackPressed() {
+        navigateTo(MainActivity::class.java)
+        super.onBackPressed()
     }
 }

@@ -1,7 +1,10 @@
 package com.example.herbvision.model
 
 data class HistoryItem(
-    val imagePath: String,
+    val id: Int,
     val plantName: String,
-    val analysisDate: String
+    val date: String,
+    val accuracy: Float,
+    val imagePath: String,
+    val manfaat: String
 )
