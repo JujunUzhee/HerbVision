@@ -25,7 +25,7 @@ class Classifier(context: Context) {
     )
 
     init {
-        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_resnet50.tflite")
+        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnn_resnet50.tflite")
         val options = Interpreter.Options().apply {
             setNumThreads(4)
         }
