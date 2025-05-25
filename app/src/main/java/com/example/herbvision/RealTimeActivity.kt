@@ -137,6 +137,7 @@ class RealTimeActivity : AppCompatActivity() {
         classifier.close()
         cameraExecutor.shutdown()
     }
+
     override fun onStop() {
         super.onStop()
         imageAnalyzer?.clearAnalyzer()
