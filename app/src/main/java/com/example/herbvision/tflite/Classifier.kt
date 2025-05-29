@@ -17,7 +17,7 @@ class Classifier(context: Context) {
     private var interpreter: Interpreter
     private val inputImageSize = 224
     private val numClasses = 11
-    private val CONFIDENCE_THRESHOLD = 0.5f
+    private val confidenceTreshold = 0.5f
 
     private val labels = listOf( // Biarkan tetap "unknown" untuk model
         "Bidara", "Jarak Tintir", "Kelor", "Lavender", "Lidah Buaya",
@@ -25,7 +25,7 @@ class Classifier(context: Context) {
     )
 
     init {
-        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnn_resnet50.tflite")
+        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_resnet50.tflite")
         val options = Interpreter.Options().apply {
             setNumThreads(4)
         }
@@ -58,7 +58,7 @@ class Classifier(context: Context) {
             }
 
             // Kasus 1: confidence rendah
-            if (confidence < CONFIDENCE_THRESHOLD) {
+            if (confidence < confidenceTreshold) {
                 Log.d("Classifier", "Confidence rendah (< 0.5). Output dianggap tidak diketahui.")
                 return Pair("Tanaman Tidak Diketahui", null)
             }

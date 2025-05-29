@@ -32,53 +32,55 @@ class MainActivity : AppCompatActivity() {
         private const val REQUEST_GALLERY = 2
     }
 
+    //Lifecycle method utama untuk inisialisasi activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val bottomNav = findViewById<View>(R.id.bottomNavigationLayout)
+        setupUI()
+        setupBottomNavigation()
+        setupListeners()
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(bottomNav) { view, insets ->
-            val systemInsets = insets.getInsets(Type.systemBars())
-            view.setPadding(0, 0, 0, systemInsets.bottom)
-            WindowInsetsCompat.CONSUMED
-        }
-
-        // Set click listener untuk setiap menu di bottom navigation
-        findViewById<View>(R.id.histori_layout).setOnClickListener {
-            startActivity(Intent(this, HistoryActivity::class.java))
-        }
-
-        findViewById<View>(R.id.panduan_layout).setOnClickListener {
-            startActivity(Intent(this, UsageActivity::class.java))
-        }
-
-        findViewById<View>(R.id.tentang_layout).setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
-
+    //Mengatur elemen UI dasar dan padding sistem
+    private fun setupUI() {
         cameraButton = findViewById(R.id.cameraButton)
         galleryButton = findViewById(R.id.galleryButton)
 
+        val bottomNav = findViewById<View>(R.id.bottomNavigationLayout)
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNav) { view, insets ->
+            val systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(0, 0, 0, systemInsets.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+
+    //Listener untuk navigasi bawah: histori, panduan, tentang
+    private fun setupBottomNavigation() {
+        findViewById<View>(R.id.histori_layout).setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
+        findViewById<View>(R.id.panduan_layout).setOnClickListener {
+            startActivity(Intent(this, UsageActivity::class.java))
+        }
+        findViewById<View>(R.id.tentang_layout).setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
+        }
+    }
+
+    //Listener untuk tombol kamera, galeri, dan real-time
+    private fun setupListeners() {
         cameraButton.setOnClickListener {
-            if (checkCameraPermission()) {
-                openCamera()
-            } else {
-                requestCameraPermission()
-            }
+            if (checkCameraPermission()) openCamera()
+            else requestCameraPermission()
         }
 
         galleryButton.setOnClickListener {
-            if (checkStoragePermission()) {
-                openGallery()
-            } else {
-                requestStoragePermission()
-            }
+            if (checkStoragePermission()) openGallery()
+            else requestStoragePermission()
         }
 
-        val realtimeButton = findViewById<ImageView>(R.id.realtimeButton)
-        realtimeButton.setOnClickListener {
-            // Optional: Cek permission kamera dulu, biar aman
+        findViewById<ImageView>(R.id.realtimeButton).setOnClickListener {
             if (checkCameraPermission()) {
                 startActivity(Intent(this, RealTimeActivity::class.java))
             } else {
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun checkCameraPermission(): Boolean {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
@@ -126,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(galleryIntent, REQUEST_GALLERY)
     }
 
-
+    //Menangani hasil dari kamera atau galeri, lalu arahkan ke analisis.
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -138,16 +141,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 REQUEST_GALLERY -> {
-                    val imageUri = data?.data
-                    if (imageUri != null) {
-                        navigateToAnalysis(imageUri) // kirim URI saja
-                    }
+                    data?.data?.let { navigateToAnalysis(it) }
                 }
             }
         }
     }
 
-
+    //Mengarahkan gambar ke halaman AnalysisActivity sebagai Uri atau Bitmap.
     private fun navigateToAnalysis(image: Any) {
         val intent = Intent(this, AnalysisActivity::class.java)
         if (image is Bitmap) {
@@ -158,14 +158,13 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    //Override tombol back untuk konfirmasi keluar aplikasi.
     @Suppress("MissingSuperCall")
     override fun onBackPressed() {
         android.app.AlertDialog.Builder(this)
             .setTitle("Keluar Aplikasi")
             .setMessage("Apakah Anda yakin ingin keluar?")
-            .setPositiveButton("Ya") { _, _ ->
-                finishAffinity() // Keluar dari semua aktivitas
-            }
+            .setPositiveButton("Ya") { _, _ -> finishAffinity() }
             .setNegativeButton("Tidak", null)
             .show()
     }

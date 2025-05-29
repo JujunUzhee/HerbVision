@@ -7,10 +7,21 @@
     android:padding="20dp">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MANFAAT TANAMAN HERBAL"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:fontFamily="@font/lemonada"
+        android:layout_marginBottom="8dp" />
+    <TextView
         android:id="@+id/bottomsheetmanfaat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Manfaat Tanaman Herbal"
+        android:fontFamily="@font/lemonada"
+        android:layout_marginTop="15dp"
         android:textSize="16sp"
-        android:lineSpacingExtra="4dp"/>
+        android:lineSpacingExtra="6dp"/>
 </LinearLayout>

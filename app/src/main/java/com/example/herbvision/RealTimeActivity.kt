@@ -13,20 +13,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.herbvision.tflite.Classifier
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.max
 
 class RealTimeActivity : AppCompatActivity() {
 
     private lateinit var previewView: PreviewView
     private lateinit var resultText: TextView
+    private lateinit var btnAnalyze: FloatingActionButton
     private lateinit var classifier: Classifier
     private lateinit var cameraExecutor: ExecutorService
+    private var isCameraFrozen = false
+    private var latestBitmap: Bitmap? = null
+    private var bottomSheetDialog: BottomSheetDialog? = null
 
-    private var imageAnalyzer: ImageAnalysis? = null
+    private val predictionBuffer = ArrayDeque<Pair<String, Float>>(5)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +41,12 @@ class RealTimeActivity : AppCompatActivity() {
 
         previewView = findViewById(R.id.previewView)
         resultText = findViewById(R.id.resultText)
+        btnAnalyze = findViewById(R.id.btnAnalyze)
+
+        classifier = Classifier(this)
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        btnAnalyze.isEnabled = false
 
         if (allPermissionsGranted()) {
             startCamera()
@@ -41,8 +54,23 @@ class RealTimeActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
-        classifier = Classifier(this)
-        cameraExecutor = Executors.newSingleThreadExecutor()
+        btnAnalyze.setOnClickListener {
+            if (!isCameraFrozen && latestBitmap != null && predictionBuffer.isNotEmpty()) {
+                isCameraFrozen = true
+
+                val (label, confidence) = getStablePrediction()
+                val confidencePct = confidence?.let { "%.2f%%".format(it * 100) } ?: ""
+
+                resultText.text = if (label == "Tanaman Tidak Diketahui") label else "$label ($confidencePct)"
+
+                val manfaatKey = "manfaat_${label.lowercase().replace(" ", "_")}"
+                val manfaatResId = resources.getIdentifier(manfaatKey, "string", packageName)
+                val manfaat = if (manfaatResId != 0) getString(manfaatResId)
+                else getString(R.string.manfaat_unknown)
+
+                showManfaatBottomSheet(manfaat)
+            }
+        }
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
@@ -53,19 +81,18 @@ class RealTimeActivity : AppCompatActivity() {
     }
 
     private fun allPermissionsGranted() =
-        ContextCompat.checkSelfPermission(
-            baseContext, Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(baseContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
+
             val preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
 
-            imageAnalyzer = ImageAnalysis.Builder()
+            val imageAnalyzer = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
@@ -78,33 +105,67 @@ class RealTimeActivity : AppCompatActivity() {
 
             try {
                 cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageAnalyzer
-                )
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
             } catch (e: Exception) {
                 Log.e("RealTime", "Gagal bind kamera: ${e.message}")
             }
-
         }, ContextCompat.getMainExecutor(this))
     }
 
     private fun processImageProxy(imageProxy: ImageProxy) {
-        val bitmap = imageProxy.toBitmap() ?: run {
-            imageProxy.close()
-            return
-        }
+        if (!isCameraFrozen) {
+            val bitmap = imageProxy.toBitmap()
+            if (bitmap != null) {
+                latestBitmap = bitmap
+                val (label, confidence) = classifier.classifyImage(bitmap)
 
-        val (label, confidence) = classifier.classifyImage(bitmap)
-        runOnUiThread {
-            resultText.text = if (confidence != null) {
-                "$label (%.2f%%)".format(confidence * 100)
-            } else {
-                label // Tanpa akurasi
+                if (label != "Tanaman Tidak Diketahui") {
+                    synchronized(predictionBuffer) {
+                        if (predictionBuffer.size >= 5) predictionBuffer.removeFirst()
+                        predictionBuffer.addLast(label to (confidence ?: 0f))
+                    }
+
+                    val (stableLabel, stableConfidence) = getStablePrediction()
+
+                    runOnUiThread {
+                        val confText = "%.2f%%".format(stableConfidence * 100)
+                        resultText.text = "$stableLabel ($confText)"
+                        btnAnalyze.isEnabled = true
+                    }
+                } else {
+                    runOnUiThread {
+                        resultText.text = "Tanaman Tidak Diketahui"
+                        btnAnalyze.isEnabled = false
+                    }
+                }
             }
         }
-
-
         imageProxy.close()
+    }
+
+    private fun getStablePrediction(): Pair<String, Float> {
+        val counts = predictionBuffer.groupingBy { it.first }.eachCount()
+        val mostCommon = counts.maxByOrNull { it.value }?.key ?: "Tanaman Tidak Diketahui"
+        val averageConfidence = predictionBuffer
+            .filter { it.first == mostCommon }
+            .map { it.second }
+            .average()
+            .toFloat()
+
+        return mostCommon to averageConfidence
+    }
+
+    private fun showManfaatBottomSheet(manfaat: String) {
+        if (bottomSheetDialog?.isShowing == true) return
+
+        bottomSheetDialog = BottomSheetDialog(this).apply {
+            setContentView(R.layout.bottom_sheet_manfaat)
+            findViewById<TextView>(R.id.bottomsheetmanfaat)?.text = manfaat
+            setOnDismissListener {
+                isCameraFrozen = false
+            }
+            show()
+        }
     }
 
     private fun ImageProxy.toBitmap(): Bitmap? {
@@ -118,16 +179,20 @@ class RealTimeActivity : AppCompatActivity() {
             val vSize = vBuffer.remaining()
 
             val nv21 = ByteArray(ySize + uSize + vSize)
+
             yBuffer.get(nv21, 0, ySize)
             vBuffer.get(nv21, ySize, vSize)
             uBuffer.get(nv21, ySize + vSize, uSize)
 
-            val yuvImage = android.graphics.YuvImage(nv21, android.graphics.ImageFormat.NV21, width, height, null)
-            val out = java.io.ByteArrayOutputStream()
+            val yuvImage = android.graphics.YuvImage(
+                nv21, android.graphics.ImageFormat.NV21, width, height, null
+            )
+            val out = ByteArrayOutputStream()
             yuvImage.compressToJpeg(android.graphics.Rect(0, 0, width, height), 90, out)
             val imageBytes = out.toByteArray()
             BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         } catch (e: Exception) {
+            Log.e("RealTime", "Konversi ke Bitmap gagal: ${e.message}")
             null
         }
     }
@@ -140,10 +205,7 @@ class RealTimeActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        imageAnalyzer?.clearAnalyzer()
         classifier.close()
         cameraExecutor.shutdown()
-        Log.d("RealTimeActivity", "Resources dibersihkan di onStop")
     }
-
 }

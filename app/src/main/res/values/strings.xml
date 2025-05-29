@@ -6,11 +6,11 @@
     <string name="vision">Vision</string>
     <string name="kamera">Kamera</string>
     <string name="preview">Preview gambar</string>
-    <string name="identifikasi">Deteksi</string>
+    <string name="identifikasi">Mulai Klasifikasi</string>
     <string name="tentang">Tentang</string>
     <string name="histori">Riwayat</string>
     <string name="tutor1">Untuk Memulai identifikasi tanaman herbal memilih menggunakan kamera atau galeri</string>
-    <string name="penggunaan">Penggunaan</string>
+    <string name="penggunaan">Panduan</string>
     <string name="tutor2">Kemudian klik button identifikasi</string>
     <string name="tutor3">Kemudian akan menampilkan nama tanaman dan manfaat tanaman yang diidentifikasi</string>
     <string name="tutor">tutor</string>

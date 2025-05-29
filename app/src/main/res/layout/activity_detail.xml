@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
     <!-- LAYOUT UTAMA -->
@@ -86,6 +87,7 @@
                 android:text="MANFAAT TANAMAN HERBAL"
                 android:layout_gravity="center"
                 android:textStyle="bold"
+                android:fontFamily="@font/lemonada"
                 android:textSize="20sp"
                 android:layout_marginBottom="8dp" />
 
@@ -99,7 +101,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="(Manfaat akan tampil di sini)"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/lemonada"
                     android:lineSpacingExtra="4dp" />
             </ScrollView>
         </LinearLayout>
