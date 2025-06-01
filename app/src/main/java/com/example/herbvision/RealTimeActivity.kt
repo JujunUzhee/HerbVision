@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
+import android.util.Size
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.math.max
 
 class RealTimeActivity : AppCompatActivity() {
 
@@ -29,9 +29,19 @@ class RealTimeActivity : AppCompatActivity() {
     private lateinit var btnAnalyze: FloatingActionButton
     private lateinit var classifier: Classifier
     private lateinit var cameraExecutor: ExecutorService
+    private var lastAnalyzedTime = 0L
+    private val ANALYZE_INTERVAL_MS = 200L // jeda antar prediksi 1 detik
+    private var lastStableLabel: String? = null
+
+
     private var isCameraFrozen = false
     private var latestBitmap: Bitmap? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
+
+    private var cameraProvider: ProcessCameraProvider? = null
+    private var imageAnalyzer: ImageAnalysis? = null
+
+    private var isActivityActive = true
 
     private val predictionBuffer = ArrayDeque<Pair<String, Float>>(5)
 
@@ -86,13 +96,14 @@ class RealTimeActivity : AppCompatActivity() {
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         cameraProviderFuture.addListener({
-            val cameraProvider = cameraProviderFuture.get()
+            cameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
 
-            val imageAnalyzer = ImageAnalysis.Builder()
+            imageAnalyzer = ImageAnalysis.Builder()
+                .setTargetResolution(Size(224, 224))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
@@ -104,8 +115,8 @@ class RealTimeActivity : AppCompatActivity() {
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
+                cameraProvider?.unbindAll()
+                cameraProvider?.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
             } catch (e: Exception) {
                 Log.e("RealTime", "Gagal bind kamera: ${e.message}")
             }
@@ -113,35 +124,48 @@ class RealTimeActivity : AppCompatActivity() {
     }
 
     private fun processImageProxy(imageProxy: ImageProxy) {
+        if (!isActivityActive) {
+            imageProxy.close()
+            return
+        }
+
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastAnalyzedTime < ANALYZE_INTERVAL_MS) {
+            imageProxy.close()
+            return
+        }
+        lastAnalyzedTime = currentTime
+
         if (!isCameraFrozen) {
             val bitmap = imageProxy.toBitmap()
             if (bitmap != null) {
                 latestBitmap = bitmap
                 val (label, confidence) = classifier.classifyImage(bitmap)
 
-                if (label != "Tanaman Tidak Diketahui") {
-                    synchronized(predictionBuffer) {
-                        if (predictionBuffer.size >= 5) predictionBuffer.removeFirst()
-                        predictionBuffer.addLast(label to (confidence ?: 0f))
-                    }
+                synchronized(predictionBuffer) {
+                    if (predictionBuffer.size >= 5) predictionBuffer.removeFirst()
+                    predictionBuffer.addLast(label to (confidence ?: 0f))
+                }
 
-                    val (stableLabel, stableConfidence) = getStablePrediction()
+                val (stableLabel, stableConfidence) = getStablePrediction()
 
-                    runOnUiThread {
+                runOnUiThread {
+                    if (stableLabel == "Tanaman Tidak Diketahui") {
+                        resultText.text = "Tanaman Tidak Diketahui"
+                        btnAnalyze.isEnabled = false
+                    } else {
                         val confText = "%.2f%%".format(stableConfidence * 100)
                         resultText.text = "$stableLabel ($confText)"
                         btnAnalyze.isEnabled = true
                     }
-                } else {
-                    runOnUiThread {
-                        resultText.text = "Tanaman Tidak Diketahui"
-                        btnAnalyze.isEnabled = false
-                    }
                 }
+
             }
         }
+
         imageProxy.close()
     }
+
 
     private fun getStablePrediction(): Pair<String, Float> {
         val counts = predictionBuffer.groupingBy { it.first }.eachCount()
@@ -197,14 +221,30 @@ class RealTimeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        classifier.close()
-        cameraExecutor.shutdown()
+    override fun onResume() {
+        super.onResume()
+        isActivityActive = true
+        predictionBuffer.clear()
+        isCameraFrozen = false
+        resultText.text = "Mendeteksi..."
+        btnAnalyze.isEnabled = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isActivityActive = false
     }
 
     override fun onStop() {
         super.onStop()
+        cameraProvider?.unbindAll()
+        classifier.close()
+        cameraExecutor.shutdown()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraProvider?.unbindAll()
         classifier.close()
         cameraExecutor.shutdown()
     }

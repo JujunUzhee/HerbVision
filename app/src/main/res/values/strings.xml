@@ -9,7 +9,7 @@
     <string name="identifikasi">Mulai Klasifikasi</string>
     <string name="tentang">Tentang</string>
     <string name="histori">Riwayat</string>
-    <string name="tutor1">Untuk Memulai identifikasi tanaman herbal memilih menggunakan kamera atau galeri</string>
+    <string name="tutor1">Untuk mengidentifikasi tanaman herbal, pengguna dapat memilih foto dari galeri atau mengambil gambar secara real-time dengan kamera.</string>
     <string name="penggunaan">Panduan</string>
     <string name="tutor2">Kemudian klik button identifikasi</string>
     <string name="tutor3">Kemudian akan menampilkan nama tanaman dan manfaat tanaman yang diidentifikasi</string>
@@ -20,7 +20,7 @@
     <string name="akurasi">Akurasi</string>
     <string name="tanggal_analisis">Tanggal Analisis</string>
     <string name="nama_tanaman">Nama Tanaman</string>
-
+    <string name="realtime">Realtime</string>
 
     <!-- Nama Tanaman -->
     <string name="lavender">Lavender</string>
@@ -39,25 +39,26 @@
     <!-- Manfaat Tanaman -->
     <string name="manfaat_lavender">&#8226; Relaksasi\n&#8226; Meredakan kecemasan\n&#8226; Meningkatkan kualitas tidur\n&#8226; Pereda nyeri\n&#8226; Antikejang\n&#8226; Antiinflamasi\n&#8226; Antioksidan\n&#8226; Antibakteri\n&#8226; Antijamur</string>
 
-    <string name="manfaat_rosemary">&#8226; Antiinflamasi\n&#8226; Antioksidan\n&#8226; Antibakteri\n&#8226; Pereda nyeri\n&#8226; Antidiabetik\n&#8226; Antikanker\n&#8226; Pelindung hati\n&#8226; Meningkatkan daya ingat dan konsentrasi</string>
+    <string name="manfaat_rosemary">&#8226; Sumber antioksidan kuat\n&#8226; Antiinflamasi dan antibakteri\n&#8226; Mendukung kesehatan otak dan daya ingat\n&#8226; Membantu menjaga kadar gula darah\n&#8226; Berpotensi sebagai antikanker\n&#8226; Melindungi hati dari radikal bebas\n&#8226; Digunakan dalam pengobatan tradisional dan modern</string>
 
-    <string name="manfaat_tapak_dara">&#8226; Antidiabetik\n&#8226; Antihipertensi\n&#8226; Antikanker (vinblastin dan vinkristin)\n&#8226; Antioksidan</string>
+    <string name="manfaat_tapak_dara">&#8226; Menurunkan tekanan darah\n&#8226; Membantu mengontrol kadar gula darah\n&#8226; Mengandung senyawa antikanker (vinblastin dan vinkristin)\n&#8226; Sumber antioksidan untuk melindungi sel tubuh</string>
 
-    <string name="manfaat_bidara">&#8226; Membersihkan racun dalam tubuh\n&#8226; Menenangkan pikiran\n&#8226; Membantu mengatasi gangguan tidur\n&#8226; Antibakteri\n&#8226; Antioksidan\n&#8226; Menyembuhkan luka\n&#8226; Mendukung kesehatan kulit</string>
+    <string name="manfaat_bidara">&#8226; Antimikroba: Efektif melawan bakteri, jamur, dan parasit.\n&#8226; Analgetik dan Antipiretik: Membantu meredakan nyeri dan menurunkan demam.\n&#8226; Antiinflamasi: Mengurangi peradangan dalam tubuh\n&#8226; Antikanker: Memiliki efek sitotoksik yang dapat menghambat pertumbuhan sel kanker.\n&#8226;Antioksidan: Melawan radikal bebas yang dapat merusak sel-sel tubuh.\n&#8226; Antidepresan: Menghambat degradasi neurotransmiter untuk mencegah depresi.\n&#8226; Antidiabetik: Menghambat enzim pemecah karbohidrat untuk mengontrol kadar gula darah.\n&#8226;</string>
 
-    <string name="manfaat_saga">&#8226; Antidiabetik\n&#8226; Antioksidan\n&#8226; Antiinflamasi</string>
+    <string name="manfaat_saga">&#8226; Sumber antioksidan\n&#8226; Antiinflamasi dan antibakteri\n&#8226; Membantu mengontrol kadar gula darah\n&#8226; Meredakan batuk dan radang tenggorokan\n&#8226; Berpotensi sebagai antivirus dan antimalaria</string>
 
     <string name="manfaat_jarak_tintir">&#8226; Mempercepat penyembuhan luka\n&#8226; Membantu epitelisasi kulit\n&#8226; Bersifat antiseptik</string>
 
-    <string name="manfaat_mint">&#8226; Antibakteri\n&#8226; Antijamur\n&#8226; Antiinflamasi\n&#8226; Pereda nyeri dan kram perut\n&#8226; Antidiabetik\n&#8226; Pelindung hati\n&#8226; Pelindung saraf</string>
+    <string name="manfaat_mint">&#8226; Mengandung mentol untuk efek menyegarkan\n&#8226; Sumber antioksidan dan vitamin\n&#8226; Menjaga kesehatan mulut dan gigi\n&#8226; Membantu sistem pernapasan\n&#8226; Meningkatkan kesehatan pencernaan\n&#8226; Bermanfaat untuk kulit\n&#8226; Digunakan dalam industri farmasi dan makanan</string>
 
-    <string name="manfaat_kelor">&#8226; Kaya nutrisi (protein, vitamin, mineral)\n&#8226; Antioksidan\n&#8226; Antiinflamasi\n&#8226; Antikanker\n&#8226; Antihipertensi\n&#8226; Pelindung hati\n&#8226; Antidiabetik</string>
+    <string name="manfaat_kelor">&#8226; Kaya nutrisi (vitamin, protein, mineral)\n&#8226; Antioksidan\n&#8226; Antiinflamasi\n&#8226; Antikanker\n&#8226; Antidiabetik\n&#8226; Menjaga kesehatan jantung, hati, dan tekanan darah</string>
 
-    <string name="manfaat_temulawak">&#8226; Antiinflamasi\n&#8226; Antioksidan\n&#8226; Antimikroba\n&#8226; Pelindung hati\n&#8226; Menstabilkan pencernaan\n&#8226; Meredakan diare</string>
+    <string name="manfaat_temulawak">&#8226; Sumber antioksidan dan antiinflamasi\n&#8226; Melawan bakteri dan mikroba\n&#8226; Menjaga kesehatan hati\n&#8226; Meningkatkan fungsi pencernaan\n&#8226; Membantu meredakan diare\n&#8226; Meningkatkan daya tahan tubuh</string>
 
-    <string name="manfaat_lidah_buaya">&#8226; Menyembuhkan luka\n&#8226; Merangsang pembentukan kolagen\n&#8226; Antiinflamasi\n&#8226; Antibakteri\n&#8226; Antivirus\n&#8226; Melembapkan kulit\n&#8226; Meredakan iritasi</string>
+    <string name="manfaat_lidah_buaya">&#8226; Mempercepat penyembuhan luka\n&#8226; Merangsang produksi kolagen untuk regenerasi kulit\n&#8226; Mengurangi peradangan\n&#8226; Melawan bakteri dan virus\n&#8226; Melembapkan dan menyehatkan kulit\n&#8226; Meredakan iritasi dan gatal</string>
 
     <string name="manfaat_unknown">Tanaman tidak diketahui. Silakan coba lagi dengan gambar yang lebih jelas atau sudut yang berbeda.</string>
-    <string name="realtime">Realtime</string>
+
+
 
 </resources>
