@@ -4,28 +4,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/panduan_layout"
-    android:fitsSystemWindows="true"
-    android:clipToPadding="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UsageActivity"
-    android:background="@color/white">
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    tools:context=".UsageActivity">
 
     <!-- Header -->
     <include
+        android:id="@+id/header"
         layout="@layout/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Scrollable Content -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <!-- Judul (tidak ikut scroll) -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/penggunaan"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:fontFamily="@font/lemonada"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Konten tutorial yang scrollable -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        android:gravity="top">
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,20 +52,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Judul -->
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/penggunaan"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:fontFamily="@font/lemonada"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="80dp"/>
-
-            <!-- Langkah 1 -->
+            <!-- LANGKAH 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,37 +60,33 @@
                 android:gravity="center_vertical"
                 android:paddingBottom="16dp">
 
-                <!-- Gambar Tutorial -->
                 <ImageView
                     android:id="@+id/img_tutor1"
-                    android:layout_width="1dp"
+                    android:layout_width="0dp"
                     android:layout_height="150dp"
+                    android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/tutor"
-                    android:layout_weight="1"/>
+                    android:contentDescription="@string/tutor" />
 
-                <!-- Keterangan -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:text="@string/tutor1"
                     android:fontFamily="@font/lemonada"
                     android:textSize="11sp"
                     android:textColor="@color/black"
-                    android:layout_marginStart="11sp"/>
+                    android:layout_marginHorizontal="10dp" />
 
-                <!-- Nomor Langkah -->
                 <ImageView
                     android:id="@+id/img_satu"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/tutor"
-                    android:layout_marginEnd="8dp"/>
+                    android:contentDescription="@string/tutor" />
             </LinearLayout>
 
-            <!-- Langkah 2 -->
+            <!-- LANGKAH 2 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,29 +99,28 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/tutor"
-                    android:layout_marginEnd="8dp"/>
+                    android:contentDescription="@string/tutor" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:text="@string/tutor2"
                     android:fontFamily="@font/lemonada"
                     android:textSize="11sp"
                     android:textColor="@color/black"
-                    android:layout_marginStart="10dp"/>
+                    android:layout_marginHorizontal="10dp" />
 
                 <ImageView
                     android:id="@+id/img_tutor2"
-                    android:layout_width="1dp"
+                    android:layout_width="0dp"
                     android:layout_height="150dp"
+                    android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/tutor"
-                    android:layout_weight="1"/>
+                    android:contentDescription="@string/tutor" />
             </LinearLayout>
 
-            <!-- Langkah 3 -->
+            <!-- LANGKAH 3 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,40 +130,107 @@
 
                 <ImageView
                     android:id="@+id/img_tutor3"
-                    android:layout_width="1dp"
+                    android:layout_width="0dp"
                     android:layout_height="150dp"
+                    android:layout_weight="1"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/tutor"
-                    android:layout_weight="1"/>
+                    android:contentDescription="@string/tutor" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:text="@string/tutor3"
                     android:fontFamily="@font/lemonada"
                     android:textSize="11sp"
                     android:textColor="@color/black"
-                    android:layout_marginStart="11sp"/>
+                    android:layout_marginHorizontal="10dp" />
 
                 <ImageView
                     android:id="@+id/img_tiga"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/tutor"
-                    android:layout_marginEnd="8dp"/>
+                    android:contentDescription="@string/tutor" />
             </LinearLayout>
 
+            <!-- LANGKAH 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/img_empat"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tutor" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/tutor4"
+                    android:fontFamily="@font/lemonada"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp" />
+
+                <ImageView
+                    android:id="@+id/img_tutor4"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tutor" />
+            </LinearLayout>
+
+            <!-- LANGKAH 5 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/img_tutor5"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tutor" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/tutor5"
+                    android:fontFamily="@font/lemonada"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp" />
+
+                <ImageView
+                    android:id="@+id/img_lima"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tutor" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation -->
     <include
-        layout="@layout/bottom_navigation"
         android:id="@+id/bottom_navigation"
+        layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

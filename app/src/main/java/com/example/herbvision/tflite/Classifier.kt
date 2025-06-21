@@ -17,7 +17,7 @@ class Classifier(context: Context) {
     private var interpreter: Interpreter
     private val inputImageSize = 224
     private val numClasses = 11
-    private val confidenceTreshold = 0.6f
+    private val confidenceTreshold = 0.4f
 
     private val labels = listOf( // Biarkan tetap "unknown" untuk model
         "Bidara", "Jarak Tintir", "Kelor", "Lavender", "Lidah Buaya",
@@ -25,12 +25,12 @@ class Classifier(context: Context) {
     )
 
     init {
-        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnn.tflite")
+        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnn_efficientnetv2s.tflite")
         val options = Interpreter.Options().apply {
             setNumThreads(4)
         }
         interpreter = Interpreter(model, options)
-        Log.d("Classifier", "Model ResNet50 berhasil dimuat")
+        Log.d("Classifier", "Model EfficientNetV2-S berhasil dimuat")
     }
 
     fun classifyImage(bitmap: Bitmap): Pair<String, Float?> {
@@ -85,7 +85,10 @@ class Classifier(context: Context) {
 
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(inputImageSize, inputImageSize, ResizeOp.ResizeMethod.BILINEAR))
-            .add(NormalizeOp(0f, 255f))
+
+// .add(NormalizeOp(0f, 255f))
+//           .add(NormalizeOp(127.5f, 127.5f))  // Menjadi range [-1, 1]
+
             .build()
 
         return imageProcessor.process(tensorImage)

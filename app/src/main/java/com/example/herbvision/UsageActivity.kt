@@ -14,12 +14,16 @@ class UsageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_usage)
 
         // Load gambar
-        loadImage(R.drawable.tutor1, findViewById(R.id.img_tutor1))
-        loadImage(R.drawable.tutor2, findViewById(R.id.img_tutor2))
+        loadImage(R.drawable.tutor4, findViewById(R.id.img_tutor1))
+        loadImage(R.drawable.tutorial2, findViewById(R.id.img_tutor2))
         loadImage(R.drawable.tutor3, findViewById(R.id.img_tutor3))
+        loadImage(R.drawable.tutor4, findViewById(R.id.img_tutor4))
+        loadImage(R.drawable.tutor5, findViewById(R.id.img_tutor5))
         loadImage(R.drawable.satu, findViewById(R.id.img_satu))
         loadImage(R.drawable.dua, findViewById(R.id.img_dua))
         loadImage(R.drawable.tiga, findViewById(R.id.img_tiga))
+        loadImage(R.drawable.empat, findViewById(R.id.img_empat))
+        loadImage(R.drawable.lima, findViewById(R.id.img_lima))
 
         // Bottom navigation listener
         findViewById<View>(R.id.identifikasi_layout).setOnClickListener {
