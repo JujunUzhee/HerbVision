@@ -12,9 +12,10 @@
     <string name="tutor1">Untuk mengidentifikasi tanaman herbal, pengguna dapat memilih gambar dari galeri atau mengambil foto menggunakan kamera. </string>
     <string name="penggunaan">Panduan</string>
     <string name="tutor2">Kemudian klik button mulai klasifikasi</string>
-    <string name="tutor3">Kemudian akan menampilkan nama tanaman dan manfaat tanaman yang diidentifikasi</string>
+    <string name="tutor3">Kemudian akan menampilkan gambar dan nama tanaman. Manfaat tanaman ditampilkan dalam bottom sheet yang bisa ditarik ke atas untuk melihat informasi lengkap.</string>
    <string name="tutor4">Untuk melakukan identifikasi secara real-time, pengguna terlebih dahulu harus menekan tombol “Real-Time” pada halaman utama.</string>
     <string name="tutor5">Sistem akan membuka kamera dan secara otomatis melakukan klasifikasi terhadap tanaman yang ditangkap oleh kamera, tanpa perlu menekan tombol tambahan.</string>
+    <string name="tutor6">Untuk melihat manfaat tanaman bisa klik button manfaat, kemudian manfaat tanaman akan di tampilkan</string>
     <string name="tutor">tutor</string>
     <string name="about">HerbVision adalah aplikasi untuk mengidentifikasi berbagai jenis tanaman herbal dengan mudah. Cukup ambil gambar menggunakan kamera atau pilih dari galeri, dan aplikasi akan memberi tahu nama dan manfaat tanaman tersebut. Semua analisis yang dilakukan akan tersimpan dalam riwayat, sehingga Anda bisa melihatnya lagi kapan saja.</string>
     <string name="Detail">Dibuat oleh: \n Nama : Jujun Junaedi\nNIM : 20210810016 \n Kelas : TINFC-2021-05\nProgram Studi : Teknik Informatika\nFakultas : Komputer\n Universitas : Kuningan</string>

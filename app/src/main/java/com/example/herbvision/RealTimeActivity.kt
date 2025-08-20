@@ -17,7 +17,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import com.example.herbvision.tflite.Classifier
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.button.MaterialButton
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -26,7 +26,7 @@ class RealTimeActivity : AppCompatActivity() {
 
     private lateinit var previewView: PreviewView
     private lateinit var resultText: TextView
-    private lateinit var btnAnalyze: FloatingActionButton
+    private lateinit var btnAnalyze: MaterialButton
     private lateinit var classifier: Classifier
     private lateinit var cameraExecutor: ExecutorService
     private var lastAnalyzedTime = 0L
@@ -78,7 +78,7 @@ class RealTimeActivity : AppCompatActivity() {
                 val manfaat = if (manfaatResId != 0) getString(manfaatResId)
                 else getString(R.string.manfaat_unknown)
 
-                showManfaatBottomSheet(manfaat)
+                showManfaatBottomSheet(label, manfaat)
             }
         }
     }
@@ -179,11 +179,12 @@ class RealTimeActivity : AppCompatActivity() {
         return mostCommon to averageConfidence
     }
 
-    private fun showManfaatBottomSheet(manfaat: String) {
+    private fun showManfaatBottomSheet(plantName:String, manfaat: String) {
         if (bottomSheetDialog?.isShowing == true) return
 
         bottomSheetDialog = BottomSheetDialog(this).apply {
             setContentView(R.layout.bottom_sheet_manfaat)
+            findViewById<TextView>(R.id.tv_plant_name)?.text = "Tanaman: $plantName"
             findViewById<TextView>(R.id.bottomsheetmanfaat)?.text = manfaat
             setOnDismissListener {
                 isCameraFrozen = false

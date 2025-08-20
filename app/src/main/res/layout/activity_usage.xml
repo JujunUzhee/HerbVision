@@ -129,7 +129,7 @@
                 android:paddingBottom="16dp">
 
                 <ImageView
-                    android:id="@+id/img_tutor3"
+                    android:id="@+id/img_tutor33"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
@@ -218,6 +218,39 @@
                     android:id="@+id/img_lima"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tutor" />
+            </LinearLayout>
+            <!-- LANGKAH 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:id="@+id/img_enam"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/tutor" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/tutor6"
+                    android:fontFamily="@font/lemonada"
+                    android:textSize="11sp"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp" />
+
+                <ImageView
+                    android:id="@+id/img_tutor6"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_weight="1"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/tutor" />
             </LinearLayout>

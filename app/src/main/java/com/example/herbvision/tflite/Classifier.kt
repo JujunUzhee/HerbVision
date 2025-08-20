@@ -9,7 +9,6 @@ import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.common.FileUtil
 import org.tensorflow.lite.DataType
-import org.tensorflow.lite.support.common.ops.NormalizeOp
 import java.nio.MappedByteBuffer
 
 class Classifier(context: Context) {
@@ -17,15 +16,15 @@ class Classifier(context: Context) {
     private var interpreter: Interpreter
     private val inputImageSize = 224
     private val numClasses = 11
-    private val confidenceTreshold = 0.4f
+    private val confidenceTreshold = 0.6f
 
     private val labels = listOf( // Biarkan tetap "unknown" untuk model
         "Bidara", "Jarak Tintir", "Kelor", "Lavender", "Lidah Buaya",
-        "Mint", "Rosemary", "Saga", "Tapak Dara", "Temulawak", "unknown"
+        "Mint", "Rosemary", "Saga", "Tapak Dara", "Temulawak","Unknown"
     )
 
     init {
-        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_cnn_efficientnetv2s.tflite")
+        val model: MappedByteBuffer = FileUtil.loadMappedFile(context, "model_efficientnetv2s.tflite")
         val options = Interpreter.Options().apply {
             setNumThreads(4)
         }
@@ -86,7 +85,7 @@ class Classifier(context: Context) {
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(inputImageSize, inputImageSize, ResizeOp.ResizeMethod.BILINEAR))
 
-// .add(NormalizeOp(0f, 255f))
+//.add(NormalizeOp(0f, 255f))
 //           .add(NormalizeOp(127.5f, 127.5f))  // Menjadi range [-1, 1]
 
             .build()

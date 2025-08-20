@@ -12,7 +12,7 @@
         android:id="@+id/logoImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/daun"
+        android:src="@drawable/logo_rabiku"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
